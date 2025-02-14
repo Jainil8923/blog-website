@@ -8,17 +8,6 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
-/** In the user table I did not add tokens to the store because if we use JWT 
- for authentication, the main purpose of it is stateless authentication, and if 
- we compare tokens from the database every time we are not using the full 
- functionality of JWT, instead if I create the access token and refresh 
- token when user use any restricted path then refresh token generates a new 
- token and by setting expiry time of access token if a user frequently uses 
- website no need to sign in every time and if for a very long period the 
- user is not using the website, then sign in compulsory. */
-// If you think this approach isn't right, I will change the schema
-// and adding a token. Let me know.
-
 export const usersTable = pgTable("users", {
   id: uuid().defaultRandom().primaryKey(),
   first_name: varchar({ length: 255 }).notNull(),
@@ -30,6 +19,7 @@ export const usersTable = pgTable("users", {
   background_image: varchar(),
   instagram_url: varchar(),
   facebook_url: varchar(),
+  refresh_token:varchar(),
   is_active: boolean().default(true),
   registered_at: timestamp().defaultNow(),
   updated_at: timestamp(),
